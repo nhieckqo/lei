@@ -1,23 +1,19 @@
-{% if persons_list %}
-  <table border="1" padding='1'>
-    <tr>
-      <th>ID</th>
-      <th>NAME</th>
-      <th>ADDRESS</th>
-      <th>TYPE</th>
-      <th>SHARE TYPE</th>
-    </tr>
-    {% for persons in persons_list  %}
-      <tr>
-        <td>{{persons.p_id}}</td>
-        <td>{{persons.fullname}}</td>
-        <td>{{persons.fulladdress}}</td>
-        <td>{{persons.pt_persons_types_code}}</td>
-        <td>{{persons.ppst_profile_share_types_code}}</td>
-      </tr>
+{% extends "persons/persons_base.html" %}
 
-    {% endfor %}
-  </table>
-{% else %}
-  <p>No polls are available.</p>
-{% endif %}
+{% block content %}
+{% load render_table from django_tables2 %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light" >
+  <div class="container">
+    <div class="navbar-nav align-items-center">
+
+        <a href="{% url 'persons:persons_details_create' %}" class="btn btn-primary">ADD</a>
+
+    </div>
+  </div>
+</nav>
+
+<div class="container personstable">
+{% render_table  table %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "persons/persons_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="mt-2">Person/Group/Organization Details</h1>
+    <hr class="mt-0 mb-4">
+    {% if error_message %}
+      <p> <strong> {{ error_message }} </strong> </p>
+    {% endif %}
+
+    <form action="" method="post">
+
+        {% csrf_token %}
+
+        {{ form | crispy }}
+
+
+        <button type="submit" class="btn btn-success">{{ submit_button_name }}</button>
+    </form>
+  </div>
+
+
+{% endblock %}
