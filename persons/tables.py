@@ -14,6 +14,7 @@ class PersonsTable(tables.Table):
         fields = ('p_id','fullname','fulladdress','pt_persons_types_code','ppst_profile_share_types_code')
         order_by = 'p_id'
 
+
     p_id = tables.LinkColumn('persons:persons_details', args=[A("pk")], verbose_name="PID")
     fullname = tables.Column(verbose_name="FULLNAME")
     fulladdress = tables.Column(verbose_name="FULLADDRESS")
@@ -21,3 +22,5 @@ class PersonsTable(tables.Table):
     ppst_profile_share_types_code = tables.Column(verbose_name="SHARE TYPE")
     delete = tables.LinkColumn('persons:persons_details_delete', text='X', args=[A("pk")], \
                 attrs={'a': {'class': 'btn', 'style': 'color:red;'} }, verbose_name="")
+    # check = tables.TemplateColumn('<input type="checkbox" value="{{ record.pk }}" />')
+    selection = tables.CheckBoxColumn(accessor='pk')
