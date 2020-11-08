@@ -1,7 +1,10 @@
-# from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views import  generic
 from django.urls import reverse_lazy
+from django.db import IntegrityError
+from django.contrib import messages
+
 from django_tables2 import SingleTableView
 
 from . import models
@@ -74,3 +77,11 @@ class PersonsCreateView(generic.CreateView):
 class PersonsDeleteView(generic.DeleteView):
     model = models.Persons
     success_url = reverse_lazy('persons:persons_list')
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            return super().delete(request, *args, **kwargs)
+        except IntegrityError as e:
+            messages.add_message(request, messages.ERROR, e.args[0])
+            # print (e)
+            return HttpResponseRedirect(reverse_lazy('persons:persons_list'))
