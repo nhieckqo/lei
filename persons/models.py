@@ -54,10 +54,11 @@ class Persons(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'persons'
+        db_table = 'generic"."persons'
 
     def __str__(self):
-        return self.lastname + ", " +self.firstname+ " " +self.midname+ " " +self.organization_name
+        return str(self.lastname)+", " + str(self.firstname) + " " +str(self.midname)+ " " + \
+                    str(self.organization_name)
 
 class PersonsCedula(models.Model):
     pc_id = models.AutoField(primary_key=True)
