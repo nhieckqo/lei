@@ -4,7 +4,13 @@
 
 {% block content %}
   <div class="container">
-    <h1 class="mt-2">Person/Group/Organization Details</h1>
+    <h1 class="mt-2">
+      {% if not form.instance.pk %}
+      Create Person/Group/Organization Details
+      {% else %}
+      Update Person/Group/Organization Details
+      {% endif %}
+    </h1>
     <hr class="mt-0 mb-4">
     {% if error_message %}
       <p> <strong> {{ error_message }} </strong> </p>
