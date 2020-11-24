@@ -68,12 +68,22 @@ class PersonsDeleteView(generic.DeleteView):
             return HttpResponseRedirect(reverse_lazy('persons:persons_list'))
 
 
-def update_view(request):
-    print(">>>", request.POST['edit'])
+def event_gate(request):
+    # print (request.POST)
     if request.method == "POST":
         pks = request.POST.getlist("selection")
         # selected_objects = models.Persons.objects.filter(pk__in=pks)
         if pks:
             pk = pks[0]
-            return HttpResponseRedirect(reverse('persons:persons_details',args=(pk,)))
+
+            if 'edit_button' in request.POST:
+                return HttpResponseRedirect(reverse('persons:persons_details_edit',args=(pk,)))
+            elif 'delete_button' in request.POST:
+                return HttpResponseRedirect(reverse('persons:persons_details_delete',args=(pk,)))
+            elif 'select_button' in request.POST:
+                print (">>>", request.POST['select_button'])
+        else:
+            if 'add_button' in request.POST:
+                return HttpResponseRedirect(reverse('persons:persons_details_add'))
+
     return HttpResponseRedirect(reverse_lazy('persons:persons_list'))
