@@ -188,7 +188,7 @@ class LegislativeInfo(models.Model):
 
 
 class OverviewLi(models.Model):
-    li_id = models.IntegerField(blank=True, null=True)
+    li_id = models.IntegerField(blank=False, null=False, primary_key=True)
     res_no_full = models.TextField(blank=True, null=True)
     approved_date = models.DateField(blank=True, null=True)
     title = models.TextField(blank=True, null=True)

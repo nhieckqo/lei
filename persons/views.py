@@ -5,7 +5,10 @@ from django.urls import reverse_lazy, reverse
 from django.db import IntegrityError
 from django.contrib import messages
 
-from django_tables2 import SingleTableView
+# from django_tables2 import SingleTableView
+from django_filters import FilterSet
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
 
 from . import models
 from . import forms
@@ -13,11 +16,20 @@ from . import tables
 from . import utils
 
 
-# Create your views here.
-class PersonsTableView(SingleTableView):
+class PersonsFilter(FilterSet):
+
+    class Meta:
+        model = models.Persons
+        fields = ['fullname', 'fulladdress',]
+
+
+class PersonsTableView(SingleTableMixin, FilterView):
     model = models.Persons
     table_class = tables.PersonsTable
     template_name = 'persons/persons_list.html'
+
+    filterset_class = PersonsFilter
+
 
 class PersonsUpdateView(generic.UpdateView):
     model = models.Persons
@@ -37,6 +49,7 @@ class PersonsUpdateView(generic.UpdateView):
         self.object.save()
         return super().form_valid(form)
 
+
 class PersonsCreateView(generic.CreateView):
     model = models.Persons
     template_name = 'persons/persons_details.html'
@@ -54,6 +67,7 @@ class PersonsCreateView(generic.CreateView):
         self.object.fulladdress = utils.get_fulladdress(self.object)
         self.object.save()
         return super().form_valid(form)
+
 
 class PersonsDeleteView(generic.DeleteView):
     model = models.Persons
@@ -81,7 +95,7 @@ def event_gate(request):
             elif 'delete_button' in request.POST:
                 return HttpResponseRedirect(reverse('persons:persons_details_delete',args=(pk,)))
             elif 'select_button' in request.POST:
-                print (">>>", request.POST['select_button'])
+                print (">>>", request.POST)
         else:
             if 'add_button' in request.POST:
                 return HttpResponseRedirect(reverse('persons:persons_details_add'))

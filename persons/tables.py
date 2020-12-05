@@ -6,6 +6,7 @@ from . import models
 
 
 class PersonsTable(tables.Table):
+    
     class Meta:
         model = models.Persons
         template_name = 'django_tables2/bootstrap.html'

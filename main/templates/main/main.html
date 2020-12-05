@@ -1,8 +1,8 @@
-{% extends "persons/persons_base.html" %}
+{% extends "main/main_base.html" %}
 
 {% block content %}
 
-<div class="container personstable">
+<div class="container overviewlitable">
   {% load render_table from django_tables2 %}
   {% load bootstrap3 %}
 
@@ -18,12 +18,11 @@
   {% endif %}
   <div>
     <p>
-      <form action="{% url 'persons:sort' %}" method="post">
+      <form action="{% url 'main:main' %}" method="post">
         {% csrf_token %}
         <input type="submit" name="add_button" value="Add">
         <input type="submit" name="edit_button" value="Edit">
         <input type="submit" name="delete_button" value="Delete">
-        <input type="submit" name="select_button" value="Select">
 
         {% render_table  table %}
       </form>
