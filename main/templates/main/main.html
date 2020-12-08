@@ -18,7 +18,7 @@
   {% endif %}
   <div>
     <p>
-      <form action="{% url 'main:main' %}" method="post">
+      <form action="{% url 'main:sort' %}" method="post">
         {% csrf_token %}
         <input type="submit" name="add_button" value="Add">
         <input type="submit" name="edit_button" value="Edit">

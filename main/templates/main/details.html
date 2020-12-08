@@ -1,0 +1,68 @@
+{% extends "main/main_base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="mt-2">
+      {% if not form.instance.pk %}
+      Create Legislative Information
+      {% else %}
+      Update Legislative Information
+      {% endif %}
+    </h1>
+    <hr class="mt-0 mb-4">
+    {% if error_message %}
+      <p> <strong> {{ error_message }} </strong> </p>
+    {% endif %}
+
+    <form id="form-container" method="post">
+
+        {% csrf_token %}
+
+        {{ form | crispy }}
+
+          {% for formset in inlines %}
+            {{formset.management_form}}
+            {% for form in formset %}
+              <div class="presiding-officer-form">
+                {{form.as_p}}
+              </div>
+            {% endfor %}
+
+          {% endfor %}
+        <div>
+          <button id="add-form" type="button">Add Officer</button>
+        </div>
+        
+        <button type="submit" class="btn btn-success">{{ submit_button_name }}</button>
+    </form>
+  </div>
+
+  <script type="text/javascript">
+    let presidingOfficerForm = document.querySelectorAll(".presiding-officer-form")
+    let container = document.querySelector("#form-container")
+    let addButton = document.querySelector("#add-form")
+    let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
+
+    let formNum = presidingOfficerForm.length-1 //Get the number of the last form on the page with zero-based indexing
+    addButton.addEventListener('click', addForm)
+
+    function addForm(e){
+      e.preventDefault() //cancels submitting form when addButton is clicked
+
+      let newForm = presidingOfficerForm[0].cloneNode(true) //Clone the form
+      let formRegex = RegExp(`form-(\\d){1}-`,'g') //Regex to find all instances of the form number
+
+      formNum++ //Increment the form number
+
+      newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNum}-`) //Update the new form to have the correct form number
+      container.insertBefore(newForm, addButton) //Insert the new form at the end of the list of forms
+
+      totalForms.setAttribute('value', `${formNum+1}`) //Increment the number of total forms in the form management
+    }
+
+
+  </script>
+
+{% endblock %}

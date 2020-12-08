@@ -44,7 +44,7 @@ class CfgCertifyingOfficers(models.Model):
         db_table = 'lei"."cfg_certifying_officers'
 
     def __str__(self):
-        return str(self.name)
+        return str(self.name) + " - " + str(self.designation)
 
 
 class CfgGlobal(models.Model):
@@ -85,7 +85,7 @@ class CfgPresidingOfficers(models.Model):
         db_table = 'lei"."cfg_presiding_officers'
 
     def __str__(self):
-        return str(self.name)
+        return str(self.name) + " - " + str(self.designation)
 
 
 class LegApprovedBy(models.Model):
@@ -151,17 +151,17 @@ class LegCertifiedBy(models.Model):
 
 class LegPresidedOverBy(models.Model):
     li_lpob_id = models.AutoField(primary_key=True)
-    presided_over_by_name = models.TextField(blank=True, null=True)
-    presided_over_by_designation = models.TextField(blank=True, null=True)
-    presided_over_by_remarks = models.TextField(blank=True, null=True)
+    presided_over_by_name = models.CharField(blank=True, null=True,  max_length=500)
+    presided_over_by_designation = models.CharField(blank=True, null=True, max_length=500)
+    presided_over_by_remarks = models.CharField(blank=True, null=True, max_length=500)
     li_li = models.ForeignKey('LegislativeInfo', models.DO_NOTHING, blank=True, null=True)
-
+    li_li_po = models.ForeignKey('CfgPresidingOfficers', models.DO_NOTHING, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lei"."leg_presided_over_by'
 
     def __str__(self):
-        return str(self.presided_over_by_name)
+        return str(self.li_li) + " / " +str(self.presided_over_by_name)
 
 
 class LegislativeInfo(models.Model):
@@ -184,7 +184,7 @@ class LegislativeInfo(models.Model):
         db_table = 'lei"."legislative_info'
 
     def __str__(self):
-        return str(self.record_no)+" - "+str(self.title)
+        return str(self.record_no)+" - "+str(self.series)
 
 
 class OverviewLi(models.Model):
