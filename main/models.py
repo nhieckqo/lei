@@ -38,6 +38,7 @@ class CfgCertifyingOfficers(models.Model):
     li_co_id = models.AutoField(primary_key=True)
     name = models.TextField(blank=True, null=True)
     designation = models.TextField(blank=True, null=True)
+    co_code = models.CharField(max_length=100, unique=True)
 
     class Meta:
         managed = False
@@ -110,6 +111,7 @@ class LegAttendees(models.Model):
     is_present = models.BooleanField(blank=True, null=True)
     remarks = models.TextField(blank=True, null=True)
     li_li = models.ForeignKey('LegislativeInfo', models.DO_NOTHING, blank=True, null=True)
+    li_li_o = models.ForeignKey('CfgOfficials', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -140,13 +142,14 @@ class LegCertifiedBy(models.Model):
     certified_by_designation = models.TextField(blank=True, null=True)
     certified_by_remarks = models.TextField(blank=True, null=True)
     li_li = models.ForeignKey('LegislativeInfo', models.DO_NOTHING, blank=True, null=True)
+    co_code = models.ForeignKey('CfgCertifyingOfficers', models.DO_NOTHING, blank=True, null=True, to_field="co_code")
 
     class Meta:
         managed = False
         db_table = 'lei"."leg_certified_by'
 
     def __str__(self):
-        return str(self.certified_by_name)
+        return str(self.li_li) + " / " +str(self.certified_by_name)
 
 
 class LegPresidedOverBy(models.Model):
@@ -156,6 +159,7 @@ class LegPresidedOverBy(models.Model):
     presided_over_by_remarks = models.CharField(blank=True, null=True, max_length=500)
     li_li = models.ForeignKey('LegislativeInfo', models.DO_NOTHING, blank=True, null=True)
     li_li_po = models.ForeignKey('CfgPresidingOfficers', models.DO_NOTHING, blank=True, null=True)
+
     class Meta:
         managed = False
         db_table = 'lei"."leg_presided_over_by'

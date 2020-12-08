@@ -7,7 +7,7 @@ from django_filters import FilterSet
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
 
-from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory
+from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSetFactory, NamedFormsetsMixin
 
 from . import models
 from . import tables
@@ -54,9 +54,18 @@ class LegPresidedOverByInline(InlineFormSetFactory):
                       'can_order': False, 'can_delete': True}
     # formset_kwargs = {'auto_id': 'my_id_%s'}
 
-class LegislativeInfoUpdateView(UpdateWithInlinesView):
+class LegAttendeesInline(InlineFormSetFactory):
+    model = models.LegAttendees
+    form_class = forms.LegAttendeesForm
+    prefix = 'attendees-form'
+    factory_kwargs = {'extra': 1, 'max_num': None,
+                      'can_order': False, 'can_delete': True}
+
+
+class LegislativeInfoUpdateView(NamedFormsetsMixin, UpdateWithInlinesView):
     model = models.LegislativeInfo
-    inlines = [LegPresidedOverByInline,]
+    inlines = [LegPresidedOverByInline, LegAttendeesInline]
+    inlines_names = ['LegPresidedOverBy', 'LegAttendees']
     # fields = ['record_no', 'series', 'approved_date', 'title', 'summary', 'body_text',]
     template_name = 'main/details.html'
     success_url = reverse_lazy('main:main')

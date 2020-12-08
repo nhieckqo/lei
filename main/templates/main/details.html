@@ -22,17 +22,26 @@
 
         {{ form | crispy }}
 
-          {% for formset in inlines %}
-            {{formset.management_form}}
-            {% for form in formset %}
-              <div class="presiding-officer-form">
-                {{form.as_p}}
-              </div>
-            {% endfor %}
+
+
+          {{LegPresidedOverBy.management_form}}
+          {% for form in LegPresidedOverBy %}
+            <div class="presiding-officer-form">
+              {{form | crispy}}
+            </div>
           {% endfor %}
 
-
         <button id="add-form" type="button">Add Officer</button>
+
+        {{LegAttendees.management_form}}
+        {% for form_la in LegAttendees %}
+          <div class="attendees-form">
+            {{form_la | crispy}}
+          </div>
+        {% endfor %}
+
+        <button id="add-form-la" type="button">Add Atendees</button>
+
         <div >
           <button type="submit" class="btn btn-success">{{ submit_button_name }}</button>
         </div>
@@ -41,12 +50,17 @@
 
   <script type="text/javascript">
     let presidingOfficerForm = document.querySelectorAll(".presiding-officer-form")
+    let attendeesForm = document.querySelectorAll(".attendees-form")
     let container = document.querySelector("#form-container")
     let addButton = document.querySelector("#add-form")
+    let addButtonLA = document.querySelector("#add-form-la")
     let totalForms = document.querySelector("#id_form-TOTAL_FORMS")
 
     let formNum = presidingOfficerForm.length-1 //Get the number of the last form on the page with zero-based indexing
+    let formNumLA = attendeesForm.length-1 //Get the number of the last form on the page with zero-based indexing
+
     addButton.addEventListener('click', addForm)
+    addButtonLA.addEventListener('click', addFormLA)
 
     function addForm(e){
       e.preventDefault() //cancels submitting form when addButton is clicked
@@ -62,6 +76,19 @@
       totalForms.setAttribute('value', `${formNum+1}`) //Increment the number of total forms in the form management
     }
 
+    function addFormLA(e){
+      e.preventDefault() //cancels submitting form when addButton is clicked
+
+      let newForm = attendeesForm[0].cloneNode(true) //Clone the form
+      let formRegex = RegExp(`form-(\\d){1}-`,'g') //Regex to find all instances of the form number
+
+      formNumLA++ //Increment the form number
+
+      newForm.innerHTML = newForm.innerHTML.replace(formRegex, `form-${formNumLA}-`) //Update the new form to have the correct form number
+      container.insertBefore(newForm, addButtonLA) //Insert the new form at the end of the list of forms
+
+      totalForms.setAttribute('value', `${formNumLA+1}`) //Increment the number of total forms in the form management
+    }
 
   </script>
 
