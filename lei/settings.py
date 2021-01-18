@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'django_tables2',
     'crispy_forms',
     'django_filters',
-    'bootstrap3',
+    'bootstrap4',
     'extra_views',
 
     'django.contrib.admin',
@@ -90,7 +90,7 @@ DATABASES = {
         'OPTIONS': {
             'options':'-c search_path=public,generic,lei'
         },
-        'NAME': 'dev',
+        'NAME': 'dev_django',
         'USER': 'postgres',
         'PASSWORD': 'admin',
         'HOST': 'localhost',

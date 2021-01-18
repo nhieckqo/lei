@@ -142,7 +142,8 @@ class LegCertifiedBy(models.Model):
     certified_by_designation = models.TextField(blank=True, null=True)
     certified_by_remarks = models.TextField(blank=True, null=True)
     li_li = models.ForeignKey('LegislativeInfo', models.DO_NOTHING, blank=True, null=True)
-    co_code = models.ForeignKey('CfgCertifyingOfficers', models.DO_NOTHING, blank=True, null=True, to_field="co_code")
+    # co_code = models.ForeignKey('CfgCertifyingOfficers', models.DO_NOTHING, blank=True, null=True, to_field="co_code")
+    li_li_co = models.ForeignKey('CfgCertifyingOfficers', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False

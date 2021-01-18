@@ -21,6 +21,7 @@ class LegPresidedOverByForm(forms.ModelForm):
         self.fields['li_li_po'] = forms.ModelChoiceField(queryset=models.CfgPresidingOfficers.objects,
                                                                             label="Presiding Officer")
 
+
 class LegAttendeesForm(forms.ModelForm):
 
     class Meta:
@@ -30,4 +31,16 @@ class LegAttendeesForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(LegAttendeesForm, self).__init__(*args, **kwargs)
         self.fields['li_li_o'] = forms.ModelChoiceField(queryset=models.CfgOfficials.objects,
+                                                                            label="Attendees")
+
+
+class LegCertifiedByForm(forms.ModelForm):
+
+    class Meta:
+        model = models.LegCertifiedBy
+        fields = ['li_li_co',]
+
+    def __init__(self, *args, **kwargs):
+        super(LegCertifiedByForm, self).__init__(*args, **kwargs)
+        self.fields['li_li_co'] = forms.ModelChoiceField(queryset=models.CfgCertifyingOfficers.objects,
                                                                             label="Attendees")

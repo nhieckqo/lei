@@ -57,15 +57,22 @@ class LegPresidedOverByInline(InlineFormSetFactory):
 class LegAttendeesInline(InlineFormSetFactory):
     model = models.LegAttendees
     form_class = forms.LegAttendeesForm
-    prefix = 'attendees-form'
+    # prefix = 'attendees-form'
+    factory_kwargs = {'extra': 1, 'max_num': None,
+                      'can_order': False, 'can_delete': True}
+
+
+class LegCertifiedByInline(InlineFormSetFactory):
+    model = models.LegCertifiedBy
+    form_class = forms.LegCertifiedByForm
     factory_kwargs = {'extra': 1, 'max_num': None,
                       'can_order': False, 'can_delete': True}
 
 
 class LegislativeInfoUpdateView(NamedFormsetsMixin, UpdateWithInlinesView):
     model = models.LegislativeInfo
-    inlines = [LegPresidedOverByInline, LegAttendeesInline]
-    inlines_names = ['LegPresidedOverBy', 'LegAttendees']
+    inlines = [LegPresidedOverByInline, LegAttendeesInline, LegCertifiedByInline]
+    inlines_names = ['LegPresidedOverBy', 'LegAttendees', 'LegCertifiedBy']
     # fields = ['record_no', 'series', 'approved_date', 'title', 'summary', 'body_text',]
     template_name = 'main/details.html'
     success_url = reverse_lazy('main:main')

@@ -23,7 +23,6 @@
         {{ form | crispy }}
 
 
-
           {{LegPresidedOverBy.management_form}}
           {% for form in LegPresidedOverBy %}
             <div class="presiding-officer-form">
@@ -41,6 +40,16 @@
         {% endfor %}
 
         <button id="add-form-la" type="button">Add Atendees</button>
+
+        {{LegCertifiedBy.management_form}}
+        {% for form_lcb in LegCertifiedBy %}
+          <div class="certified-by-form">
+            {{form_la | crispy}}
+          </div>
+        {% endfor %}
+
+        <button id="add-form-la" type="button">Add Atendees</button>
+
 
         <div >
           <button type="submit" class="btn btn-success">{{ submit_button_name }}</button>
