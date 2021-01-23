@@ -1,0 +1,17 @@
+services:
+  lei:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/lei
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=192.168.205.177
+      - DB_NAME=dev_django
+      - DB_USER=postgres
+      - DB_PASS=admin
+      - DB_PORT=5432
