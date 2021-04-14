@@ -4,9 +4,9 @@
 <div class="container">
   <form method="post">
     {% csrf_token %}
-    <p>Are you sure you want to delete {{ persons.fullname }}?</p>
+    <p>Are you sure you want to delete?</p>
     <button type="submit" class="btn btn-danger">Confirm</button>
-    <a href="{% url 'persons:persons_list' %}">Cancel</a>
+    <a href="{% url 'main:main' %}">Cancel</a>
   </form>
 </div>
 

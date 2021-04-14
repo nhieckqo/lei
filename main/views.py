@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import UpdateView
+from django.views.generic import DeleteView
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 
@@ -84,6 +84,33 @@ class LegislativeInfoUpdateView(NamedFormsetsMixin, UpdateWithInlinesView):
         return context
 
 
+class LegislativeInfoCreateView(NamedFormsetsMixin, CreateWithInlinesView):
+    model = models.LegislativeInfo
+    template_name = 'main/details.html'
+    inlines = [LegPresidedOverByInline, LegAttendeesInline, LegCertifiedByInline]
+    inlines_names = ['LegPresidedOverBy', 'LegAttendees', 'LegCertifiedBy']
+    form_class = forms.LegislativeInfoForm
+    success_url = reverse_lazy('main:main')
+
+    def get_context_data(self, **kwargs):
+        kwargs['submit_button_name'] = 'Create'
+        context = super(LegislativeInfoCreateView, self).get_context_data(**kwargs)
+        return context
+
+
+class LegislativeInfoDeleteView(DeleteView):
+    model = models.LegislativeInfo
+    success_url = reverse_lazy('main:main')
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            return super().delete(request, *args, **kwargs)
+        except IntegrityError as e:
+            messages.add_message(request, messages.ERROR, e.args[0])
+            # print (e)
+            return HttpResponseRedirect(reverse_lazy('main:main'))
+
+
 def event_gate(request):
 
     if request.method == 'POST':
@@ -94,8 +121,11 @@ def event_gate(request):
 
             if 'edit_button' in request.POST:
                 return HttpResponseRedirect(reverse('main:details_edit', args=(pk,)))
+            elif 'delete_button' in request.POST:
+                return HttpResponseRedirect(reverse('main:details_delete',args=(pk,)))
 
         else:
-            pass
+            if 'add_button' in request.POST:
+                return HttpResponseRedirect(reverse('main:details_add'))
 
     return HttpResponseRedirect(reverse_lazy('main:main'))

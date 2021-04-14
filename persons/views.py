@@ -95,6 +95,7 @@ def event_gate(request):
             elif 'delete_button' in request.POST:
                 return HttpResponseRedirect(reverse('persons:persons_details_delete',args=(pk,)))
             elif 'select_button' in request.POST:
+                #TODO: add function that will pass selected record to the caller of this module
                 print (">>>", request.POST)
         else:
             if 'add_button' in request.POST:
