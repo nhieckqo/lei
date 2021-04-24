@@ -24,7 +24,7 @@ class OverviewLiFilter(FilterSet):
 class OverviewLiView(SingleTableMixin, FilterView):
     model = models.OverviewLi
     table_class = tables.OverviewLiTable
-    template_name = 'main/main.html'
+    template_name = 'legislativeinfo/legislativeinfo.html'
 
     filterset_class = OverviewLiFilter
 
@@ -32,7 +32,7 @@ class OverviewLiView(SingleTableMixin, FilterView):
 #     model = models.LegislativeInfo
 #     template_name = "main/details.html"
 #     form_class = forms.LegislativeInfoForm
-#     success_url = reverse_lazy('main:main')
+#     success_url = reverse_lazy('legislativeinfo:overview')
 #
 #     def get_context_data(self, **kwargs):
 #         kwargs['submit_button_name'] = 'Update'
@@ -74,8 +74,8 @@ class LegislativeInfoUpdateView(NamedFormsetsMixin, UpdateWithInlinesView):
     inlines = [LegPresidedOverByInline, LegAttendeesInline, LegCertifiedByInline]
     inlines_names = ['LegPresidedOverBy', 'LegAttendees', 'LegCertifiedBy']
     # fields = ['record_no', 'series', 'approved_date', 'title', 'summary', 'body_text',]
-    template_name = 'main/details.html'
-    success_url = reverse_lazy('main:main')
+    template_name = 'legislativeinfo/legislativeinfo_details.html'
+    success_url = reverse_lazy('legislativeinfo:overview')
     form_class = forms.LegislativeInfoForm
 
     def get_context_data(self, **kwargs):
@@ -86,11 +86,11 @@ class LegislativeInfoUpdateView(NamedFormsetsMixin, UpdateWithInlinesView):
 
 class LegislativeInfoCreateView(NamedFormsetsMixin, CreateWithInlinesView):
     model = models.LegislativeInfo
-    template_name = 'main/details.html'
+    template_name = 'legislativeinfo/legislativeinfo_details.html'
     inlines = [LegPresidedOverByInline, LegAttendeesInline, LegCertifiedByInline]
     inlines_names = ['LegPresidedOverBy', 'LegAttendees', 'LegCertifiedBy']
     form_class = forms.LegislativeInfoForm
-    success_url = reverse_lazy('main:main')
+    success_url = reverse_lazy('legislativeinfo:overview')
 
     def get_context_data(self, **kwargs):
         kwargs['submit_button_name'] = 'Create'
@@ -100,7 +100,7 @@ class LegislativeInfoCreateView(NamedFormsetsMixin, CreateWithInlinesView):
 
 class LegislativeInfoDeleteView(DeleteView):
     model = models.LegislativeInfo
-    success_url = reverse_lazy('main:main')
+    success_url = reverse_lazy('legislativeinfo:overview')
 
     def delete(self, request, *args, **kwargs):
         try:
@@ -108,7 +108,7 @@ class LegislativeInfoDeleteView(DeleteView):
         except IntegrityError as e:
             messages.add_message(request, messages.ERROR, e.args[0])
             # print (e)
-            return HttpResponseRedirect(reverse_lazy('main:main'))
+            return HttpResponseRedirect(reverse_lazy('legislativeinfo:overview'))
 
 
 def event_gate(request):
@@ -120,12 +120,12 @@ def event_gate(request):
             pk = pks[0]
 
             if 'edit_button' in request.POST:
-                return HttpResponseRedirect(reverse('main:details_edit', args=(pk,)))
+                return HttpResponseRedirect(reverse('legislativeinfo:details_edit', args=(pk,)))
             elif 'delete_button' in request.POST:
-                return HttpResponseRedirect(reverse('main:details_delete',args=(pk,)))
+                return HttpResponseRedirect(reverse('legislativeinfo:details_delete',args=(pk,)))
 
         else:
             if 'add_button' in request.POST:
-                return HttpResponseRedirect(reverse('main:details_add'))
+                return HttpResponseRedirect(reverse('legislativeinfo:details_add'))
 
-    return HttpResponseRedirect(reverse_lazy('main:main'))
+    return HttpResponseRedirect(reverse_lazy('legislativeinfo:overview'))

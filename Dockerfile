@@ -1,15 +1,20 @@
-FROM python:3.7-alpine
+FROM python:3.7
 
 ENV PYTHONUNBUFFERED 1
 
 COPY ./requirements.txt /requirements.txt
-RUN apk add --update --no-cache postgresql-client
-RUN pip install -r /requirements.txt
+RUN apt-get update
+RUN apt-get install -y postgresql
+RUN apt-get install libpq-dev gcc
+RUN export PATH=/usr/lib/postgresql/X.Y/bin/:$PATH
+RUN apt-get install -y python3-dev
+RUN apt-get install -y python3-psycopg2
+
+RUN pip3 install -r requirements.txt
 
 RUN mkdir /lei
 WORKDIR /lei
 COPY . /lei
 
-RUN adduser -D user
+RUN adduser --disabled-password user
 USER user
-

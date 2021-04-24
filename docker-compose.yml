@@ -10,7 +10,7 @@ services:
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
     environment:
-      - DB_HOST=192.168.205.177
+      - DB_HOST=192.168.254.184
       - DB_NAME=dev_django
       - DB_USER=postgres
       - DB_PASS=admin
