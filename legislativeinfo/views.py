@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import DeleteView
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django_filters import FilterSet
 from django_filters.views import FilterView
@@ -21,7 +22,7 @@ class OverviewLiFilter(FilterSet):
         fields = ['res_no_full', 'title', 'summary']
 
 
-class OverviewLiView(SingleTableMixin, FilterView):
+class OverviewLiView(LoginRequiredMixin, SingleTableMixin, FilterView):
     model = models.OverviewLi
     table_class = tables.OverviewLiTable
     template_name = 'legislativeinfo/legislativeinfo.html'
@@ -69,7 +70,7 @@ class LegCertifiedByInline(InlineFormSetFactory):
                       'can_order': False, 'can_delete': True}
 
 
-class LegislativeInfoUpdateView(NamedFormsetsMixin, UpdateWithInlinesView):
+class LegislativeInfoUpdateView(LoginRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesView):
     model = models.LegislativeInfo
     inlines = [LegPresidedOverByInline, LegAttendeesInline, LegCertifiedByInline]
     inlines_names = ['LegPresidedOverBy', 'LegAttendees', 'LegCertifiedBy']
@@ -84,7 +85,7 @@ class LegislativeInfoUpdateView(NamedFormsetsMixin, UpdateWithInlinesView):
         return context
 
 
-class LegislativeInfoCreateView(NamedFormsetsMixin, CreateWithInlinesView):
+class LegislativeInfoCreateView(LoginRequiredMixin, NamedFormsetsMixin, CreateWithInlinesView):
     model = models.LegislativeInfo
     template_name = 'legislativeinfo/legislativeinfo_details.html'
     inlines = [LegPresidedOverByInline, LegAttendeesInline, LegCertifiedByInline]
@@ -98,7 +99,7 @@ class LegislativeInfoCreateView(NamedFormsetsMixin, CreateWithInlinesView):
         return context
 
 
-class LegislativeInfoDeleteView(DeleteView):
+class LegislativeInfoDeleteView(LoginRequiredMixin, DeleteView):
     model = models.LegislativeInfo
     success_url = reverse_lazy('legislativeinfo:overview')
 
