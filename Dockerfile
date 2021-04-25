@@ -1,6 +1,7 @@
 FROM python:3.7
 
 ENV PYTHONUNBUFFERED 1
+ENV MY_PASSWORD = 'NDVSA2020'
 
 COPY ./requirements.txt /requirements.txt
 RUN apt-get update

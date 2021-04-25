@@ -141,3 +141,16 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
 LOGIN_REDIRECT_URL = '/'
+
+
+# # Gmail SMTP Server
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = '587'
+# EMAIL_HOST_USER = 'ndvsa2020@gmail.com'
+# EMAIL_HOST_PASSWORD = os.environ.get('NDVSA2020')
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Don't forget to remove Dummy Email Backend if you set it previously
+EMAIL_HOST = 'smtp-server'  # Your Mailhog Host
+EMAIL_PORT = '1025'
